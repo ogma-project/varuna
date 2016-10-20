@@ -1,0 +1,25 @@
+{
+  "name": "varuna-bundle",
+  "version": "0.0.0",
+  "description": "An application bundle to run varuna, the ogma frontend",
+  "main": "bundle/main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "pulp browserify --to bundle/varuna.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Thomas Letan",
+  "license": "MIT",
+  "devDependencies": {
+    "electron-prebuilt": "^1.4.3",
+    "pulp": "^9.0.1",
+    "purescript": "^0.9.3",
+    "bower": "^1.7.9"
+  },
+  "dependencies": {
+    "virtual-dom": "^2.1.1",
+    "xhr2": "^0.1.3"
+  }
+}

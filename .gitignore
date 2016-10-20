@@ -6,3 +6,6 @@
 /src/.webpack.js
 # pulp browserify output
 /bundle/varuna.js
+# makefile internals
+.npm
+.bower

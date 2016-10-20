@@ -1,5 +1,5 @@
 {
-  "name": "varuna-bundle",
+  "name": "varuna",
   "version": "0.0.0",
   "description": "An application bundle to run varuna, the ogma frontend",
   "main": "bundle/main.js",
@@ -7,8 +7,10 @@
     "test": "test"
   },
   "scripts": {
-    "build": "pulp browserify --to bundle/varuna.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "make bundle/varuna.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "make clean",
+    "mrproper": "make mrproper"
   },
   "author": "Thomas Letan",
   "license": "MIT",
@@ -21,5 +23,6 @@
   "dependencies": {
     "virtual-dom": "^2.1.1",
     "xhr2": "^0.1.3"
-  }
+  },
+  "private": true
 }

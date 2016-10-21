@@ -1,6 +1,6 @@
 module Varuna.Ogmarkup where
 
-import Prelude (($), (<<<))
+import Prelude (($), (<<<), class Eq)
 import Data.Maybe (Maybe(..))
 import Data.Char (fromCharCode)
 import Data.String (singleton) as S
@@ -24,11 +24,22 @@ fr :: forall p i
     . Typography (Array (HTML p i))
 fr = frenchTypo mkO
 
+data Language = Fr | En
+
+derive instance eqLang :: Eq Language
+
+lang2typo :: forall p i
+           . Language
+          -> Typography (Array (HTML p i))
+lang2typo Fr = fr
+lang2typo En = en
+
 conf :: forall p i
-      . GenConf (Array (HTML p i))
-conf = GC gc
+      . Language
+     -> GenConf (Array (HTML p i))
+conf l = GC gc
   where
-    gc = { typography:         en
+    gc = { typography:         lang2typo l
          , documentTemplate:   docT
          , errorTemplate:      errorT
          , storyTemplate:      storyT

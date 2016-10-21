@@ -7,8 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "build": "make run",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "make build",
+    "test": "npm run build",
     "clean": "make clean",
     "mrproper": "make mrproper"
   },

@@ -12,3 +12,4 @@ bundle/
 # makefile internals
 .npm
 .bower
+.assets

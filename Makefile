@@ -1,11 +1,21 @@
 SRCPURS  = $(shell find src -name '*.purs')
 SRCJS    = $(shell find src -name '*.js')
-VARUNAJS = bundle/varuna.js
+BUNDLE   = bundle
+VARUNAJS = varuna-$(shell git rev-parse --short HEAD).js
+JS       = ${BUNDLE}/${VARUNAJS}
+INDEX    = ${BUNDLE}/index.html
 
-build:
-	@npm run --silent build
+# use npm binaries
+export PATH := $(shell npm bin):${PATH}
 
-${VARUNAJS}: ${SRCPURS} ${SRCJS} .bower .npm
+build: ${JS} ${INDEX}
+	@$(call done)
+
+${INDEX}: assets/html/index.html ${JS}
+	@$(call build_echo,index.html)
+	@sed -e 's/@VARUNAJS@/$(subst /,\/,${VARUNAJS})/' $< > $@
+
+${JS}: ${SRCPURS} ${SRCJS} .bower .npm
 	@$(call build_echo,varuna.js)
 	@pulp browserify -O --to $@
 
@@ -20,8 +30,8 @@ ${VARUNAJS}: ${SRCPURS} ${SRCJS} .bower .npm
 	@touch .npm
 
 clean:
-	@$(call rm_echo,${VARUNAJS})
-	@rm -f ${VARUNAJS}
+	@$(call rm_echo,built bundle)
+	@rm -f bundle/*
 
 mrproper: clean
 	@$(call rm_echo, node modules)
@@ -48,6 +58,10 @@ endef
 
 define deps_echo
 	$(call color_echo,${BLUE},deps: ${1})
+endef
+
+define done
+	$(call color_echo,${GREEN},done)
 endef
 
 GREEN = "\e[32m"

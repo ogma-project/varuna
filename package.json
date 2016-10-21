@@ -1,13 +1,13 @@
 {
   "name": "varuna",
   "version": "0.0.0",
-  "description": "An application bundle to run varuna, the ogma frontend",
-  "main": "bundle/main.js",
+  "description": "ogma in your browser",
+  "main": "main-electron.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "build": "make bundle/varuna.js",
+    "build": "make run",
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "make clean",
     "mrproper": "make mrproper"

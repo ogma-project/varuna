@@ -1,11 +1,14 @@
+# output
+bundle/
+
+# purescript related
 /bower_components/
 /node_modules/
 /.pulp-cache/
 /output/
 /.psci*
 /src/.webpack.js
-# pulp browserify output
-/bundle/varuna.js
+
 # makefile internals
 .npm
 .bower

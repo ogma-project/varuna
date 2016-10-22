@@ -59,7 +59,11 @@ mrproper: clean
 	@rm -rf ./bower_components
 	@rm -f .bower
 
-.PHONY: clean mrproper build
+dev-env:
+	@$(call deps_echo,install git hooks)
+	@ln -sf ../../.template/hooks/commit-msg .git/hooks/commit-msg
+
+.PHONY: clean mrproper build dev-env
 
 # colored print functions
 define color_echo

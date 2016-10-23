@@ -63,7 +63,15 @@ dev-env:
 	@$(call deps_echo,install git hooks)
 	@ln -sf ../../.template/hooks/commit-msg .git/hooks/commit-msg
 
-.PHONY: clean mrproper build dev-env
+electron:
+	@$(call color_echo,${BLUE},spawn an electron instance)
+	@electron .
+
+firefox:
+	@$(call color_echo,${BLUE},spawn firefox)
+	@firefox ${INDEX}
+
+.PHONY: clean mrproper build dev-env electron firefox
 
 # colored print functions
 define color_echo

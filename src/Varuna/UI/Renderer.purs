@@ -7,12 +7,15 @@ import Data.Either            (Either(..))
 import Data.Maybe             (Maybe(..))
 -- halogen imports
 import Halogen                (action, fromAff, HalogenEffects, ComponentDSL, ComponentHTML, Component, modify, gets)
+import Halogen.HTML.Core      (ClassName)
 import Halogen.Component      (lifecycleComponent)
-import Halogen.HTML.Indexed   (div_) as H
+import Halogen.HTML.Indexed   (div) as H
+import Halogen.HTML.Properties.Indexed (classes) as P
 -- varuna imports
 import Varuna.Ogmarkup        (Language, VDOM, conf)
 import Varuna.Component.Utils (raise) -- to be moved
 import Text.Ogmarkup          (ogmarkup)
+import Varuna.UI.HTML.Loading (loading)
 
 -- renderer data
 type PreviewDOM = VDOM Query
@@ -25,6 +28,9 @@ data Query a = Ask Language String a
 data Queue = Free
            | Busy
            | Pending Language String
+previewing :: Queue -> Boolean
+previewing Free = false
+previewing _ = true
 
 data State = State { preview  :: PreviewDOM
                    , queue    :: Queue
@@ -49,9 +55,12 @@ type RendererAff eff = Aff (RendererEffects eff)
 -- render function
 type RendererHTML = ComponentHTML Query
 
-render :: State
+render :: Array ClassName
+       -> State
        -> RendererHTML
-render (State st) = H.div_ st.preview
+render clss (State st) = H.div [ P.classes clss
+                               ]
+                               $ loading (previewing st.queue) st.preview
 
 -- eval function
 type RendererDSL eff = ComponentDSL State Query (RendererAff eff)
@@ -99,9 +108,10 @@ init = State { preview: []
              }
 
 renderer :: forall eff
-          . Renderer eff
-renderer = lifecycleComponent { render: render
-                              , eval: eval
-                              , initializer: Nothing
-                              , finalizer: Nothing
-                              }
+          . Array ClassName
+         -> Renderer eff
+renderer clss = lifecycleComponent { render: render clss
+                                   , eval: eval
+                                   , initializer: Nothing
+                                   , finalizer: Nothing
+                                   }

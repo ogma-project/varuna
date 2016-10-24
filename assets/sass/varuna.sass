@@ -1,0 +1,44 @@
+html, body, .fill
+  height: 100%
+
+.varuna-editor-menu
+  position:   absolute
+  bottom:     0
+  right:      0
+  color:      white
+  background: #4a0870
+  z-index:    100
+
+.editor-head
+  height:         25px
+
+  div
+    text-align:   center
+    color:        #bebebe
+    font-variant: small-caps
+
+.editor-main
+  height:       calc(100% - 25px)
+
+.varuna-textarea
+  border:       0
+
+.varuna-renderer
+  border:       0
+  border-left:  1px solid #cecece
+
+  article
+    height:       calc(100% - 4px)
+    overflow:     scroll
+    font-family:  Georgia
+    text-align:   justify
+    margin-top:   1em
+
+    div
+      margin:       auto
+      max-width:    450px
+
+  p
+    text-indent:  1em
+
+@import 'loading'

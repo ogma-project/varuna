@@ -9,7 +9,8 @@
   "dependencies": {
     "purescript-console": "^1.0.0",
     "purescript-ogmarkup": "^4.0.0",
-    "purescript-halogen": "^0.11.0"
+    "purescript-halogen": "^0.11.0",
+    "purescript-halogen-bootstrap": "^3.0.0"
   },
   "devDependencies": {
     "purescript-psci-support": "^1.0.0"

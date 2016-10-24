@@ -6,11 +6,12 @@ import Data.Functor.Coproduct          (Coproduct)
 import Data.Maybe                      (Maybe(..))
 -- halogen imports
 import Halogen                         (action, Component, query, ChildF, ParentDSL, ParentHTML, ParentState, parentComponent, parentState, gets, modify)
-import Halogen.HTML.Core               (HTML)
-import Halogen.HTML.Indexed            (slot, textarea, div_, text, input) as H
+import Halogen.HTML.Core               (HTML, className)
+import Halogen.HTML.Indexed            (slot, textarea, div, div_, text, input, h1_) as H
 import Halogen.HTML.Events.Indexed     (onValueInput, input)
-import Halogen.HTML.Properties.Indexed (checked, InputType(..), inputType) as P
+import Halogen.HTML.Properties.Indexed (checked, InputType(..), inputType, classes) as P
 import Halogen.HTML.Events.Indexed     (onClick, input_) as E
+import Halogen.Themes.Bootstrap3       as B
 -- varuna imports
 import Varuna.UI.Renderer              as Ren
 import Varuna.Ogmarkup                 (Language(..))
@@ -35,27 +36,81 @@ render :: forall eff
         . InnerState
        -> EditorHTML eff
 render (InnerState st) =
-  H.div_ [ H.textarea [ onValueInput $ input Editing ]
-         , H.div_ [ renderLanguageSelector st.language Fr
-                  , renderLanguageSelector st.language En
-                  ]
-         , H.slot RendererSlot \_ -> { component:    Ren.renderer
-                                     , initialState: Ren.init
-                                     }
-         ]
+  H.div [ P.classes [ className "varuna-editor"
+                    , className "fill"
+                    ]
+        ]
+        [ menu
+        , body
+        ]
+  where
+    body = H.div [ P.classes [ B.container
+                             , className "fill"
+                             ]
+                 ]
+                 [ H.div [ P.classes [ B.row
+                                     , className "editor-head"
+                                     ]
+                         ]
+                         [ H.div [ P.classes [ B.colLg6 ] ]
+                                 [ H.text "Markup" ]
+                         , H.div [ P.classes [ B.colLg6 ] ]
+                                 [ H.text "Preview" ]
+                         ]
+                 , H.div [ P.classes [ B.row
+                                     , className "editor-main"
+                                     ]
+                         ]
+                         [ editing
+                         , renderer RendererSlot
+                         ]
+                 ]
 
-renderLanguageSelector :: forall p
-                        . Language
-                       -> Language
-                       -> HTML p (InnerQuery Unit)
-renderLanguageSelector current option =
-  H.div_ [ H.input [ P.checked $ current == option
-                   , P.inputType P.InputRadio
-                   , E.onClick <<< E.input_ $ SetLanguage option
-                   ]
-         , H.text $ case option of Fr -> "French"
-                                   En -> "English"
-         ]
+    menu :: forall p
+          . HTML p (InnerQuery Unit)
+    menu = H.div [ P.classes [ className "varuna-editor-menu" ]
+                 ]
+                 [ H.h1_ [ H.text "Typography"
+                         ]
+                 , langSelection st.language
+                 ]
+
+    renderer slot = H.slot slot \_ -> { component:    Ren.renderer [ B.colLg6, className "varuna-renderer",  className "fill" ]
+                                      , initialState: Ren.init
+                                      }
+
+    editing :: forall p
+             . HTML p (InnerQuery Unit)
+    editing = H.textarea [ onValueInput $ input Editing
+                         , P.classes [ B.colLg6
+                                     , className "fill"
+                                     , className "varuna-textarea"
+                                     ]
+                         ]
+
+    langSelection :: forall p
+                   . Language
+                  -> HTML p (InnerQuery Unit)
+    langSelection current =
+      H.div [
+            ]
+            [ langSelector current Fr
+            , langSelector current En
+            ]
+
+    langSelector :: forall p
+                  . Language
+                 -> Language
+                 -> HTML p (InnerQuery Unit)
+    langSelector current option =
+      H.div_ [ H.input [ P.checked $ current == option
+                       , P.inputType P.InputRadio
+                       , E.onClick <<< E.input_ $ SetLanguage option
+                       ]
+             , H.text $ case option of Fr -> "French"
+                                       En -> "English"
+             ]
+
 -- query
 type EditorDSL eff = ParentDSL InnerState Ren.State InnerQuery Ren.Query (EditorAff eff) EditorSlot
 

@@ -6,10 +6,10 @@ import Control.Monad.Eff (Eff)
 import Halogen (runUI)
 import Halogen.Util (awaitBody, runHalogenAff)
 
-import Varuna.Component.Editor (EditorEffects, editor, initState)
+import Varuna.UI.Editor (EditorEffects, editor, init)
 
 main :: Eff (EditorEffects ()) Unit
 main = do
   runHalogenAff $ do
     body <- awaitBody
-    void $ runUI editor initState body
+    void $ runUI editor init body

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-head -n 1 $1 | grep -e '^deps :\|^fix: \|^dev: \|^feature: \|^rfix: ' || {
+head -n 1 $1 | grep -e '^deps: \|^fix: \|^dev: \|^feature: \|^rfix: ' || {
   echo >&2 Reject: commit messages should begin with deps, fix, dev, feature or rfix
   exit 1
 }
